@@ -1,23 +1,31 @@
 import React from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router"; 
 
 const ListScreen = () => {
-  const [listItems, setListItems] = React.useState<string[]>([]);
+  const [listItems, setListItems] = React.useState<{ text: string; completed: boolean }[]>([]);
   const [newItem, setNewItem] = React.useState<string>("");
+  const router = useRouter();
 
   const addItem = () => {
-    if (newItem.trim()) {
-      setListItems((prevItems) => [...prevItems, newItem]);
+    if (newItem.trim() && !listItems.some((item) => item.text === newItem.trim())) {
+      setListItems((prevItems) => [...prevItems, { text: newItem.trim(), completed: false }]);
       setNewItem("");
     }
+  };
+
+  const toggleItem = (index: number) => {
+    setListItems((prevItems) =>
+      prevItems.map((item, i) => (i === index ? { ...item, completed: !item.completed } : item))
+    );
   };
 
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.back()} accessible accessibilityLabel="Go back">
           <MaterialIcons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         <View style={styles.headerIcons}>
@@ -32,6 +40,8 @@ const ListScreen = () => {
         style={styles.titleInput}
         placeholder="Title"
         placeholderTextColor="#AAAAAA"
+        accessible
+        accessibilityLabel="Enter list title"
       />
 
       {/* List Input */}
@@ -45,6 +55,8 @@ const ListScreen = () => {
           value={newItem}
           onChangeText={setNewItem}
           onSubmitEditing={addItem}
+          accessible
+          accessibilityLabel="Enter a list item"
         />
       </View>
 
@@ -52,10 +64,25 @@ const ListScreen = () => {
       <FlatList
         data={listItems}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <View style={styles.listItem}>
-            <MaterialIcons name="check-box-outline-blank" size={24} color="white" />
-            <Text style={styles.listItemText}>{item}</Text>
+            <TouchableOpacity onPress={() => toggleItem(index)}>
+              <MaterialIcons
+                name={item.completed ? "check-box" : "check-box-outline-blank"}
+                size={24}
+                color="white"
+                accessible
+                accessibilityLabel={`Mark item as ${item.completed ? "incomplete" : "complete"}`}
+              />
+            </TouchableOpacity>
+            <Text
+              style={[
+                styles.listItemText,
+                item.completed && { textDecorationLine: "line-through", color: "#AAAAAA" },
+              ]}
+            >
+              {item.text}
+            </Text>
           </View>
         )}
       />
