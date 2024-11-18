@@ -179,7 +179,7 @@ const HomeScreen = () => {
 
   const handleAddNote = () => {
     // setOverlayVisible(!isOverlayVisible);
-    router.push('/home/CreateNoteScreen')
+    router.push('/')
   };
 
   const handleImagePress = () => {
