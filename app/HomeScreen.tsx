@@ -493,6 +493,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { router } from "expo-router";
+import ListScreen from "./home/ListScreen";
+
 
 type RootStackParamList = {
   Home: undefined;
@@ -512,7 +514,6 @@ const HomeScreen: React.FC = () => {
   };
   const handleIconAction = (action: string) => {
     router.push('/home/DrawingScreen')
-    // Add specific logic for each action here
   };
 
 
@@ -558,9 +559,9 @@ const HomeScreen: React.FC = () => {
 
       {/* Bottom Actions */}
       <View style={styles.bottomActions}>
-        <TouchableOpacity onPress={() => handleIconAction("Checklist")}>
-          <MaterialIcons name="check-box" size={24} color="#b3b3b3" />
-        </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push("/home/ListScreen")}>
+      <MaterialIcons name="check-box" size={24} color="#b3b3b3" />
+    </TouchableOpacity>
         <TouchableOpacity onPress={() => handleIconAction("Brush")}>
           <MaterialIcons name="brush" size={24} color="#b3b3b3" />
         </TouchableOpacity>

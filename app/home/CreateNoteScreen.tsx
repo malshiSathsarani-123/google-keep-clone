@@ -6,27 +6,40 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
+  Modal,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import AddPopup from "../../components/OptionsPopup"; // Import the AddPopup component
+import ChoosePopup from "../../components/ChoosePopup"; 
+import PaintPopup from "../../components/PaintPopup";
+import { router } from "expo-router";
 
 const CreateNoteScreen: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [note, setNote] = useState<string>("");
-  const [isPopupVisible, setPopupVisible] = useState<boolean>(false); // Manage popup visibility
+  const [isPopupVisible, setPopupVisible] = useState<boolean>(false); 
+  const [isPaintPopupVisible, setPaintPopupVisible] = useState<boolean>(false); 
 
   const handleOpenPopup = () => {
-    setPopupVisible(true); 
+    setPopupVisible(true);
   };
 
   const handleClosePopup = () => {
     setPopupVisible(false);
   };
 
+  const handleOpenPaintPopup = () => {
+    setPaintPopupVisible(true);
+  };
+
+  const handleClosePaintPopup = () => {
+    setPaintPopupVisible(false);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+      {/* Header Section */}
       <View style={styles.header}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/HomeScreen")}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <View style={styles.actions}>
@@ -42,6 +55,7 @@ const CreateNoteScreen: React.FC = () => {
         </View>
       </View>
 
+      {/* Content Section */}
       <View style={styles.content}>
         <TextInput
           style={styles.titleInput}
@@ -60,11 +74,12 @@ const CreateNoteScreen: React.FC = () => {
         />
       </View>
 
+      {/* Footer Section */}
       <View style={styles.footer}>
         <TouchableOpacity onPress={handleOpenPopup}>
           <Ionicons name="add-outline" size={28} color="#fff" />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleOpenPaintPopup}>
           <Ionicons name="color-palette-outline" size={28} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.timestamp}>Edited 10:13 AM</Text>
@@ -73,7 +88,9 @@ const CreateNoteScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      {isPopupVisible && <AddPopup onClose={handleClosePopup} />} {/* Show the popup when visible */}
+      {/* Popup Modals */}
+      {isPopupVisible && <ChoosePopup isVisible={isPopupVisible} onClose={handleClosePopup} />}
+      {isPaintPopupVisible && <PaintPopup isVisible={isPaintPopupVisible} onClose={handleClosePaintPopup} />}
     </SafeAreaView>
   );
 };
