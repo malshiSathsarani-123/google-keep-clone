@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { router } from "expo-router";
 
 const notes = [
   { id: "1", text: "Empty note" },
@@ -18,6 +20,8 @@ const notes = [
 ];
 
 const RemaindeScreen: React.FC = () => {
+  const navigation = useNavigation();
+
   const renderNote = ({ item }: { item: { id: string; text: string } }) => (
     <View style={styles.reminderCard}>
       <Text style={styles.reminderTitle}>{item.text}</Text>
@@ -29,20 +33,49 @@ const RemaindeScreen: React.FC = () => {
   );
 
   return (
-    <FlatList
-      data={notes}
-      renderItem={renderNote}
-      keyExtractor={(item) => item.id}
-      numColumns={2} // Two-column layout
-      contentContainerStyle={styles.notesContainer}
-    />
+    <View style={styles.container}>
+      {/* Back Button */}
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => router.push('/HomeScreen')}
+      >
+        <MaterialIcons name="arrow-back" size={24} color="white" />
+        <Text style={styles.backText}>Back to Home</Text>
+      </TouchableOpacity>
+
+      {/* Notes List */}
+      <FlatList
+        data={notes}
+        renderItem={renderNote}
+        keyExtractor={(item) => item.id}
+        numColumns={2} // Two-column layout
+        contentContainerStyle={styles.notesContainer}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#121212",
+  },
   notesContainer: {
     padding: 10,
     justifyContent: "center",
+  },
+  backButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#1e1e1e",
+    borderRadius: 5,
+    margin: 10,
+  },
+  backText: {
+    color: "white",
+    fontSize: 16,
+    marginLeft: 5,
   },
   reminderCard: {
     backgroundColor: "#1e1e1e",

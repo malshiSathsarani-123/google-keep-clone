@@ -178,7 +178,7 @@ import React from 'react';
 import { View, Text, Pressable, Image, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerContentComponentProps } from '@react-navigation/drawer';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 import { DrawerActions } from '@react-navigation/native';
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
@@ -199,11 +199,11 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
 
         {/* Menu Items */}
         <View style={styles.menu}>
-          <Pressable style={styles.menuItem}>
+          <Pressable style={styles.menuItem} onPress={() => router.push('/HomeScreen')}>
             <Image source={require('../assets/images/favicon.png')} style={styles.icon} />
             <Text style={styles.menuText}>Notes</Text>
           </Pressable>
-          <Pressable style={styles.menuItem}>
+          <Pressable style={styles.menuItem} onPress={() => router.push('/home/RemaindeScreen')}>
             <Image source={require('../assets/images/favicon.png')} style={styles.icon} />
             <Text style={styles.menuText}>Reminders</Text>
           </Pressable>
