@@ -6,9 +6,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  Modal, FlatList,
+  Modal,
 } from "react-native";
-import {Ionicons, MaterialIcons} from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import ChoosePopup from "../../components/ChoosePopup"; 
 import PaintPopup from "../../components/PaintPopup";
 import { router } from "expo-router";
@@ -20,16 +20,7 @@ const CreateNoteScreen: React.FC = () => {
   const [isPopupVisible, setPopupVisible] = useState<boolean>(false); 
   const [isPaintPopupVisible, setPaintPopupVisible] = useState<boolean>(false);
 
-  const notes = [
-    { id: "1", text: "Empty note" },
-    { id: "2", text: "Empty note" },
-    { id: "3", text: "Empty note" },
-    { id: "4", text: "So hiii" },
-    { id: "5", text: "Jjjj" },
-    { id: "6", text: "Empty note" },
-  ];
   const handleSaveNote = async () => {
-
     console.log(title)
     if (!title || !note) {
       alert("Title and note content cannot be empty.");
@@ -60,26 +51,26 @@ const CreateNoteScreen: React.FC = () => {
   const handleClosePaintPopup = () => {
     setPaintPopupVisible(false);
   };
-  const renderNote = ({ item }: { item: { id: string; text: string } }) => (
-      <View style={styles.reminderCard}>
-        <Text style={styles.reminderTitle}>{item.text}</Text>
-        <View style={styles.reminderTimeContainer}>
-          <MaterialIcons name="alarm" size={18} color="#9e9e9e" />
-          <Text style={styles.reminderTime}>Tomorrow, 8:00 AM</Text>
-        </View>
-      </View>
-  );
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header Section */}
-      <FlatList
-          data={notes}
-          renderItem={renderNote}
-          keyExtractor={(item) => item.id}
-          numColumns={2} // Two-column layout
-          contentContainerStyle={styles.notesContainer}
-      />
-      {/*</View>*/}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.push("/HomeScreen")}>
+          <Ionicons name="arrow-back" size={24} color="#fff" />
+        </TouchableOpacity>
+        <View style={styles.actions}>
+          <TouchableOpacity>
+            <Ionicons name="pin-outline" size={24} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Ionicons name="notifications-outline" size={24} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleSaveNote}>
+            <Ionicons name="download-outline" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      </View>
 
       {/* Content Section */}
       <View style={styles.content}>
@@ -166,32 +157,5 @@ const styles = StyleSheet.create({
   timestamp: {
     fontSize: 14,
     color: "#888",
-  },
-  notesContainer: {
-    padding: 10,
-    justifyContent: "center",
-  },
-  reminderCard: {
-    backgroundColor: "#1e1e1e",
-    borderRadius: 10,
-    padding: 15,
-    margin: 5,
-    flex: 1, // Ensures proper distribution for columns
-    maxWidth: "48%", // Ensures proper spacing between columns
-  },
-  reminderTitle: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  reminderTimeContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 5,
-  },
-  reminderTime: {
-    color: "#9e9e9e",
-    fontSize: 14,
-    marginLeft: 5,
   },
 });
