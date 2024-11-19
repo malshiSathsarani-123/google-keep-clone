@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   SafeAreaView,
   View,
@@ -13,21 +13,33 @@ import ChoosePopup from "../../components/ChoosePopup";
 import PaintPopup from "../../components/PaintPopup";
 import { router } from "expo-router";
 import { saveNote } from "@/service/api";
+import {useRoute} from "@react-navigation/core";
 
 const CreateNoteScreen: React.FC = () => {
   const [title, setTitle] = useState<string>("");
-  const [note, setNote] = useState<string>("");
+  const [noteContent, setNote] = useState<string>("");
   const [isPopupVisible, setPopupVisible] = useState<boolean>(false); 
   const [isPaintPopupVisible, setPaintPopupVisible] = useState<boolean>(false);
+  const route = useRoute();
+  const { id, note } = route.params || {};
+
+  // Log to verify the parameters
+  useEffect(() => {
+    if (id) {
+      setTitle(id);
+    }
+    if (note) {
+      setNote(note);
+    }
+  }, [id, note]);
 
   const handleSaveNote = async () => {
-    console.log(title)
-    if (!title || !note) {
+    if (!title || !noteContent) {
       alert("Title and note content cannot be empty.");
       return;
     }
     try {
-      await saveNote(title, note);
+      await saveNote(title, noteContent);
       alert("Note saved successfully!");
       setTitle("");
       setNote("");
@@ -52,11 +64,17 @@ const CreateNoteScreen: React.FC = () => {
     setPaintPopupVisible(false);
   };
 
+  function handleBack() {
+    setNote('')
+    setTitle('')
+    router.push("/HomeScreen")
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header Section */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.push("/HomeScreen")}>
+        <TouchableOpacity onPress={() => handleBack() }>
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <View style={styles.actions}>
@@ -85,7 +103,7 @@ const CreateNoteScreen: React.FC = () => {
           style={styles.noteInput}
           placeholder="Note"
           placeholderTextColor="#888"
-          value={note}
+          value={noteContent}
           onChangeText={setNote}
           multiline
         />

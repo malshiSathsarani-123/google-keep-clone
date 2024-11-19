@@ -25,7 +25,7 @@ const ListScreen = () => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} accessible accessibilityLabel="Go back">
+        <TouchableOpacity onPress={() => router.push('/HomeScreen')} accessible accessibilityLabel="Go back">
           <MaterialIcons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         <View style={styles.headerIcons}>

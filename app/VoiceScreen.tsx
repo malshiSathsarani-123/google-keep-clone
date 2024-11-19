@@ -62,7 +62,7 @@ const ListVoiceScreen = () => {
       </TouchableOpacity>
 
       {/* Close Button */}
-      <TouchableOpacity style={styles.closeButton} onPress={() => router.back()}>
+      <TouchableOpacity style={styles.closeButton} onPress={() => router.push('/HomeScreen')}>
         <MaterialIcons name="close" size={24} color="#FFFFFF" />
       </TouchableOpacity>
     </View>

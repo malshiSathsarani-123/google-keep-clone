@@ -3,8 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeScreen from './app/HomeScreen';
 import CustomDrawerContent from './components/customDrawerContent';
+import { RootStackParamList } from "./app/home/types";
+import {createStackNavigator} from "@react-navigation/native/src/__stubs__/createStackNavigator"; // Import the navigation types
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
